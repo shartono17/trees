@@ -75,6 +75,12 @@ class BinaryTree():
             raise ValueError('Traversal type ' + str(traversal_type) + ' is not supported.')
 
     def preorder_print(self, start, traversal):
+        if start:
+            traversal += (str(start.value)+'-')
+            traversal = self.preorder_print(start.left, traversal)
+            traversal = self.preorder_print(start.right, traversal)
+        return traversal
+        
         '''
         FIXME: 
         Implement this function.
@@ -82,6 +88,12 @@ class BinaryTree():
         '''
 
     def inorder_print(self, start, traversal):
+        if start:
+            traversal.inorder_print(start.left, traversal)
+            traversal += (str(start.value)+'-')
+            traversal = self.inorder_print(start.right, traversal)
+        return traversal
+        
         '''
         FIXME: 
         Implement this function.
@@ -89,6 +101,12 @@ class BinaryTree():
         '''
 
     def postorder_print(self, start, traversal):
+        if start:
+            traversal = self.postorder_print(start.left, traversal)
+            traversal = self.postorder_print(start.right, traversal)
+            traversal += (str(start.value) + '-')
+        return traversal
+        
         '''
         FIXME: 
         Implement this function.
@@ -120,24 +138,46 @@ class BinaryTree():
             raise ValueError('traversal_type=' + str(traversal_type) + ' is not supported.')
 
     def preorder(self, start, traversal):
+        if start:
+            traversal.append(start.value)
+            traversal = self.preorder(start.left, traversal)
+            traversal = self.preorder(start.right, traversal)
+        return traversal
+        
         '''
         FIXME:
         Implement this function by modifying the _print functions above.
         '''
 
     def inorder(self, start, traversal):
+        if start:
+            traversal = self.inorder(start.left, traversal)
+            traversal.append(start.value)
+            traversal = self.inorder(start.right, traversal)
+        return traversal
+
+
         '''
         FIXME:
         Implement this function by modifying the _print functions above.
         '''
 
     def postorder(self, start, traversal):
+        if start:
+            traversal = self.postorder(start.left, traversal)
+            traversal = self. postorder(start.right, traversal)
+            traversal.append(start.value)
+        return traversal
+        
         '''
         FIXME:
         Implement this function by modifying the _print functions above.
         '''
 
     def __len__(self):
+        
+        return self.size_(self.root)
+
         '''
         The lecture notes videos provide a recursive and an iterative version of a "size" function
         which behaves the same as the __len__ function is supposed to.
@@ -148,6 +188,22 @@ class BinaryTree():
         return self.size_(self.root)
 
     def size(self):
+        if self.root is None:
+            return 0
+        stack = []
+        stack.append(self.root)
+        size = 1
+
+        while stack:
+            node = stack.pop()
+            if node.left:
+                size += 1
+                stack.append(node.left)
+            if node.right:
+                size += 1
+                stack.append(node.right)
+            return size
+        
         '''
         FIXME:
         Implement this function. 
@@ -155,6 +211,11 @@ class BinaryTree():
         '''
 
     def size_(self, node):
+        
+        if node is None:
+            return 0
+        return 1 + self.size_(node.left) + self.size(node.right)
+        
         '''
         FIXME:
         Implement this function.
@@ -166,6 +227,16 @@ class BinaryTree():
 
     @staticmethod
     def _height(node):
+        
+        if node is None:
+            return -1
+        
+        left_height = BinaryTree._height(node.left)
+        right_height = BinaryTree._height(node.right)
+
+        return 1+ max(left_height, right_height)
+
+
         '''
         FIXME:
         Implement this function. 
