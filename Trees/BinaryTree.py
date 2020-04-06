@@ -89,7 +89,7 @@ class BinaryTree():
 
     def inorder_print(self, start, traversal):
         if start:
-            traversal.inorder_print(start.left, traversal)
+            traversal = self.inorder_print(start.left, traversal)
             traversal += (str(start.value)+'-')
             traversal = self.inorder_print(start.right, traversal)
         return traversal
@@ -190,6 +190,7 @@ class BinaryTree():
     def size(self):
         if self.root is None:
             return 0
+
         stack = []
         stack.append(self.root)
         size = 1
@@ -202,7 +203,7 @@ class BinaryTree():
             if node.right:
                 size += 1
                 stack.append(node.right)
-            return size
+        return size
         
         '''
         FIXME:
@@ -214,7 +215,7 @@ class BinaryTree():
         
         if node is None:
             return 0
-        return 1 + self.size_(node.left) + self.size(node.right)
+        return 1 + self.size_(node.left) + self.size_(node.right)
         
         '''
         FIXME:
