@@ -61,6 +61,9 @@ class BST(BinaryTree):
     @staticmethod
     def _is_bst_satisfied(node):
         
+        left_valid = True
+        right_valid = True
+        
         if node.left:
             left_valid = node.value > node.left.value and BST._is_bst_satisfied(node.left)
 
