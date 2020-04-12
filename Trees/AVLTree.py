@@ -6,7 +6,7 @@ The functions in this file are considerably harder than the functions in the Bin
 from Trees.BinaryTree import BinaryTree, Node
 from Trees.BST import BST
 
-class AVLTree():
+class AVLTree(BST):
     '''
     FIXME:
     AVLTree is currently not a subclass of BST.
@@ -15,6 +15,10 @@ class AVLTree():
     '''
 
     def __init__(self, xs=None):
+        super().__init__()
+        if xs:
+            self.insert_line(xs)
+        
         '''
         FIXME:
         Implement this function.
@@ -45,6 +49,10 @@ class AVLTree():
 
     @staticmethod
     def _is_avl_satisfied(node):
+        if node is None:
+            return True
+        return AVLTree._balance_factor(node) in [-1,0,1] and AVLTree._is_avl_satisfied(node.right) and AVLTree._is_avl_satisfied(node.left)
+
         '''
         FIXME:
         Implement this function.
@@ -53,6 +61,22 @@ class AVLTree():
 
     @staticmethod
     def _left_rotate(node):
+        
+        if node is None:
+            return node
+        if node.right is None:
+            return node
+
+        newroot = Node(node.right.value)
+        newroot.right = node.right.right
+
+        left = Node(node.value)
+        left.left = node.left
+        left.right = node.right.left
+
+        newroot.left = left
+
+        return newroot
         '''
         FIXME:
         Implement this function.
@@ -66,6 +90,20 @@ class AVLTree():
 
     @staticmethod
     def _right_rotate(node):
+        if node is None:
+            return node
+        if node.left is None:
+            return node
+
+        newroot= Node(node.left.value)
+        newroot.left = node.left.left
+        right = Node(node.value)
+        right.right = node.right
+        right.left = node.left.right
+
+        newroot.right = right
+        return newroot
+
         '''
         FIXME:
         Implement this function.
@@ -78,6 +116,51 @@ class AVLTree():
 
 
     def insert(self, value):
+        if self.root is None:
+            self.root = Node(value)
+
+        else: 
+            AVLTree._insert(value, self.root)
+
+
+        @staticmethod
+        def _insert(value, node):
+            if value < node.value:
+                if node.left is None:
+                    node.left is Node(value)
+                else:
+                    AVLTree._insert(value, node.left)
+            elif value > node.value:
+                if node.right is None:
+                    node.right = Node(value)
+                else:
+                    AVLTree._insert(value, node.right)
+            if AVLTree._is_avl_satisfied(node) == False:
+                node.left = AVLTree.rebalance(node.left)
+                node.right = AVLTree.rebalance(node.right)
+                return AVLTree.rebalance(node)
+            else:
+                return node
+
+        def insert_list(self, xs):
+            for item in xs:
+                self.insert(item)
+        
+        @staticmethod
+        def rebalance(node):
+            while AVLTree._balance_factor(node) < -1 or AVLTree._balance_factor(node) > 1:
+                if AVLTree._balance_factor(node) > 1:
+                    if AVLTree._balance_factor(node.left) < 0:
+                        node.left = AVLTree._left_rotate(node.left)
+                    return AVLTree._right_rotate(node)
+                
+                elif AVLTree._balance_factor(node) < -1:
+                    if AVLTree._balance_factor(node.right) > 0:
+                        node.right = AVLTree._right_rotate(node.right)
+                    return AVLTree._left_rotate(node)
+
+                else:
+                    return node
         '''
         FIXME:
         Implement this function.
