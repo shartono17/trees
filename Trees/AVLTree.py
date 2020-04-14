@@ -15,9 +15,9 @@ class AVLTree(BST):
     '''
 
     def __init__(self, xs=None):
-        super().__init__()
+        self.root = None
         if xs:
-            self.insert_line(xs)
+            self.insert_list(xs)
         
         '''
         FIXME:
@@ -62,19 +62,17 @@ class AVLTree(BST):
     @staticmethod
     def _left_rotate(node):
         
-        if node is None:
-            return node
-        if node.right is None:
+        if node is None or node.right is None:
             return node
 
         newroot = Node(node.right.value)
         newroot.right = node.right.right
 
-        left = Node(node.value)
-        left.left = node.left
-        left.right = node.right.left
+        left_node = Node(node.value)
+        left_node.left = node.left
+        left_node.right = node.right.left
 
-        newroot.left = left
+        newroot.left = left_node
 
         return newroot
         '''
@@ -90,18 +88,16 @@ class AVLTree(BST):
 
     @staticmethod
     def _right_rotate(node):
-        if node is None:
-            return node
-        if node.left is None:
+        if node is None or node.left is None:
             return node
 
         newroot= Node(node.left.value)
         newroot.left = node.left.left
-        right = Node(node.value)
-        right.right = node.right
-        right.left = node.left.right
+        right_node = Node(node.value)
+        right_node.right = node.right
+        right_node.left = node.left.right
 
-        newroot.right = right
+        newroot.right = right_node
         return newroot
 
         '''
@@ -114,53 +110,56 @@ class AVLTree(BST):
         however, so you will have to adapt their code.
         '''
 
+    def insert_list(self, xs):
+        for item in xs:
+            self.insert(item)
+
 
     def insert(self, value):
         if self.root is None:
             self.root = Node(value)
-
         else: 
-            AVLTree._insert(value, self.root)
+            self.root = AVLTree._insert(value, self.root)
 
 
-        @staticmethod
-        def _insert(value, node):
-            if value < node.value:
-                if node.left is None:
-                    node.left is Node(value)
-                else:
-                    AVLTree._insert(value, node.left)
-            elif value > node.value:
-                if node.right is None:
-                    node.right = Node(value)
-                else:
-                    AVLTree._insert(value, node.right)
-            if AVLTree._is_avl_satisfied(node) == False:
-                node.left = AVLTree.rebalance(node.left)
-                node.right = AVLTree.rebalance(node.right)
-                return AVLTree.rebalance(node)
+    @staticmethod
+    def _insert(value, node):
+        if value < node.value:
+            if node.left is None:
+                node.left = Node(value)
             else:
-                return node
-
-        def insert_list(self, xs):
-            for item in xs:
-                self.insert(item)
+                AVLTree._insert(value, node.left)
+            
+        elif value > node.value:
+            if node.right is None:
+                node.right = Node(value)
+            else:
+                AVLTree._insert(value, node.right)
         
-        @staticmethod
-        def rebalance(node):
-            while AVLTree._balance_factor(node) < -1 or AVLTree._balance_factor(node) > 1:
-                if AVLTree._balance_factor(node) > 1:
-                    if AVLTree._balance_factor(node.left) < 0:
-                        node.left = AVLTree._left_rotate(node.left)
+        if AVLTree._is_avl_satisfied(node) == False:
+            node.left = AVLTree.rebalance(node.left)
+            node.right = AVLTree.rebalance(node.right)
+            return AVLTree.rebalance(node)
+        
+        else:
+            return node
+
+        
+    @staticmethod
+    def rebalance(node):
+        while AVLTree._balance_factor(node) < -1 or AVLTree._balance_factor(node) > 1:
+            if AVLTree._balance_factor(node) > 1:
+                if AVLTree._balance_factor(node.left) < 0:
+                    node.left = AVLTree._left_rotate(node.left)
                     return AVLTree._right_rotate(node)
                 
-                elif AVLTree._balance_factor(node) < -1:
-                    if AVLTree._balance_factor(node.right) > 0:
-                        node.right = AVLTree._right_rotate(node.right)
+            elif AVLTree._balance_factor(node) < -1:
+                if AVLTree._balance_factor(node.right) > 0:
+                    node.right = AVLTree._right_rotate(node.right)
                     return AVLTree._left_rotate(node)
 
-                else:
-                    return node
+            else:
+                return node
         '''
         FIXME:
         Implement this function.
