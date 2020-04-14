@@ -16,6 +16,7 @@ class AVLTree(BST):
 
     def __init__(self, xs=None):
         self.root = None
+        super().__init__()
         if xs:
             self.insert_list(xs)
         
@@ -152,11 +153,13 @@ class AVLTree(BST):
                 if AVLTree._balance_factor(node.left) < 0:
                     node.left = AVLTree._left_rotate(node.left)
                     return AVLTree._right_rotate(node)
+                else: return AVLTree._right_rotate(node)
                 
             elif AVLTree._balance_factor(node) < -1:
                 if AVLTree._balance_factor(node.right) > 0:
                     node.right = AVLTree._right_rotate(node.right)
                     return AVLTree._left_rotate(node)
+                else: return AVLTree._left_rotate(node)
 
             else:
                 return node
