@@ -68,9 +68,11 @@ class AVLTree(BST):
         newroot = Node(node.right.value)
         newroot.right = node.right.right
 
-        newroot.left = Node(node.value)
-        newroot.left.left = node.left
-        newroot.left.right = node.right.left
+        new_left = Node(node.value)
+        new_left.left = node.left
+        new_left.right = node.right.left
+
+        newroot.left = new_left
 
         return newroot
         '''
@@ -91,9 +93,12 @@ class AVLTree(BST):
 
         newroot = Node(node.left.value)
         newroot.left = node.left.left
-        newroot.right = Node(node.value)
-        newroot.right.left = node.left.right
-        newroot.right = node.right
+
+        new_right = Node(node.value)
+        new_right.right = node.right
+        new_right.left = node.left.right
+
+        newroot.right = new_right
 
         return newroot
 
@@ -107,10 +112,6 @@ class AVLTree(BST):
         however, so you will have to adapt their code.
         '''
 
-    def insert_list(self, xs):
-        for item in xs:
-            self.insert(item)
-
 
     def insert(self, value):
         if self.root is None:
@@ -119,6 +120,13 @@ class AVLTree(BST):
             self.root = AVLTree._insert(value, self.root)
 
 
+    def insert_list(self, xs):
+        for x in xs:
+            self.insert(x)
+
+            print(x, self.root)
+
+    
     @staticmethod
     def _insert(value, node):
         if value < node.value:
@@ -134,28 +142,19 @@ class AVLTree(BST):
                 AVLTree._insert(value, node.right)
         
         if AVLTree._is_avl_satisfied(node) == False:
-            node.left = AVLTree.rebalance(node.left)
-            node.right = AVLTree.rebalance(node.right)
-            return AVLTree.rebalance(node)
+            node.left = AVLTree._rebalance(node.left)
+            node.right = AVLTree._rebalance(node.right)
+            return AVLTree._rebalance(node)
         
         else:
             return node
 
         
     @staticmethod
-    def rebalance(node):
-#        if AVLTree._balance_factor(node) < -1:
-#            if AVLTree._balance_factor(node.right) > 0:
-#                node.right = AVLTree._right_rotate(node.right)
-#            return AVLTree._left_rotate(node)
-#        elif AVLTree._balance_factor(node) > 1:
-#            if AVLTree._balance_factor(node) < 0:
-#                node.left = AVLTree._left_rotate(node.left)
-#            return AVLTree._right_rotate(node)
-#        else:
-#            return node
+    def _rebalance(node):
 
         while AVLTree._balance_factor(node) < -1 or AVLTree._balance_factor(node) > 1:
+            
             if AVLTree._balance_factor(node) > 1:
                 if AVLTree._balance_factor(node.left) < 0:
                     node.left = AVLTree._left_rotate(node.left)
