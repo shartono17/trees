@@ -175,7 +175,7 @@ class Heap(BinaryTree):
             self.root = None
             return self.root
 
-        e;se:
+        else:
             return Heap._replace(self.root)
 
     @staticmethod
