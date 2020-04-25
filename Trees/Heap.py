@@ -240,7 +240,7 @@ class Heap(BinaryTree):
         return node
 
     @staticmethod
-    def_trickle_down(value, node):
+    def _trickle_down(value, node):
         if Heap._is_heap_satisfied(node):
             return
         else:
