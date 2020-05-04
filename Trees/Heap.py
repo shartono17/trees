@@ -100,7 +100,7 @@ class Heap(BinaryTree):
         if node is None:
             return 0
         stack = []
-        stack.append(none)
+        stack.append(node)
         size = 1
         while stack:
             node = stack.pop()
