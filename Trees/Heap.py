@@ -38,7 +38,6 @@ class Heap(BinaryTree):
         '''
         return type(self).__name__+'('+str(self.to_list('inorder'))+')'
 
-
     def is_heap_satisfied(self):
         '''
         Whenever you implement a data structure,
@@ -117,11 +116,11 @@ class Heap(BinaryTree):
     @staticmethod
     def _input(value,node): 
         if node.left is None:
-            new_node = Node = (value)
+            new_node = Node(value)
             node.left = new_node
 
         elif node.right is None:
-            new_npde = Node(value)
+            new_node = Node(value)
             node.right = new_node
 
         else:
@@ -156,6 +155,12 @@ class Heap(BinaryTree):
         if Heap._is_heap_satisfied(self):
             return self.root.value
         
+    @staticmethod
+    def _find_smallest(node):
+        if node is None:
+            return
+        else:
+            return node.value
         '''
         Returns the smallest value in the tree.
 
