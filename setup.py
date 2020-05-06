@@ -16,7 +16,7 @@ setup(
     long_description_content_type="text/markdown",
     url="https://github.com/shartono17/trees",
     author="Sabrina Hartono",
-    author_email="hartonosabrina@gmail.com",
+    author_email="shartono21@students.claremontmckenna.edu",
     license="GPLv3",
     classifiers=[
        # "License :: OSI Approved :: MIT License",
